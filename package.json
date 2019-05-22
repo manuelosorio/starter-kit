@@ -1,0 +1,40 @@
+{
+  "name": "starter-kit",
+  "version": "1.0.0",
+  "description": "Starter Kit for my future projects",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manuelosorio/starter-kit.git"
+  },
+  "keywords": [
+    "Manuel",
+    "Osorio",
+    "Gulp",
+    "Sass",
+    "Pug",
+    "Starter",
+    "Kit"
+  ],
+  "author": "Manuel Osorio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/manuelosorio/starter-kit/issues"
+  },
+  "homepage": "https://github.com/manuelosorio/starter-kit#readme",
+  "devDependencies": {
+    "autoprefixer": "^9.5.1",
+    "browser-sync": "^2.26.5",
+    "cssnano": "^4.1.10",
+    "gulp": "^4.0.2",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5"
+  },
+  "dependencies": {
+    "gulp-pug": "^4.0.1"
+  }
+}
