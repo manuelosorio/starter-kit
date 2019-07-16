@@ -1,4 +1,4 @@
-var gulp = require("gulp"),
+const gulp = require("gulp"),
     clean = require("gulp-clean"),
     sass = require("gulp-sass"),
     postcss = require("gulp-postcss"),
@@ -9,12 +9,19 @@ var gulp = require("gulp"),
     autoprefixer = require("autoprefixer"),
     cssnano = require("cssnano"),
     sourcemaps = require("gulp-sourcemaps"),
-    browserSync = require("browser-sync").create();
+    browserSync = require("browser-sync").create(),
+    bourbon = require('node-bourbon').includePaths,
+    concat = require('gulp-concat'),
+    uglify = require('gulp-uglify');
 
-var paths ={
+let paths ={
   styles: {
       src: "src/assets/css/**/*.{sass,scss}",
       dest: "_dist/css"
+  },
+  fonts: {
+      src: "src/assets/fonts/**",
+      dest: "_dist/fonts"
   },
   html: {
     src: "src/**/*.pug",
@@ -23,13 +30,20 @@ var paths ={
   images: {
     src: "src/assets/images/**/*.{jpg,png,svg}",
     dest: "_dist/images"
+  },
+  scripts: {
+    src: "src/assets/scripts/**/*.js",
+    dest: "_dist/scripts"
   }
 }
 function style() {
   return gulp
     .src(paths.styles.src)
     .pipe(sourcemaps.init())
-    .pipe(sass({ outputStyle: "expanded" }))
+    .pipe(sass({
+      includePaths: ['styles'].concat(bourbon),
+      outputStyle: "expanded"
+    }))
     .on("error", sass.logError)
     .pipe(postcss([autoprefixer()]))
     .pipe(sourcemaps.write())
@@ -44,7 +58,11 @@ function html() {
     }))
     .pipe(gulp.dest(paths.html.dest))
 }
-
+function font() {
+  return gulp
+    .src(paths.fonts.src)
+    .pipe(gulp.dest(paths.fonts.dest))
+}
 function images () {
   return gulp
     .src(paths.images.src)
@@ -67,6 +85,12 @@ function images () {
     .pipe(gulp.dest(paths.images.dest))
     .pipe(browserSync.stream());
 }
+function scripts() {
+  return gulp.src(paths.scripts.src)
+    // .pipe(concat('script.js'))
+    // .pipe(uglify())
+    .pipe(gulp.dest(paths.scripts.dest))
+}
 
 function reload() {
   browserSync.reload();
@@ -81,16 +105,20 @@ function watch() {
       baseDir: "./_dist"
     }
   });
-  gulp.watch(paths.styles.src, style);
-  gulp.watch(paths.images.src, images);
+  gulp.watch(paths.styles.src, style).on('change', browserSync.reload);
+  gulp.watch(paths.images.src, images).on('change', browserSync.reload);
+  gulp.watch(paths.scripts.src, scripts).on('change', browserSync.reload);
+  gulp.watch(paths.fonts.src, scripts).on('change', browserSync.reload);
   gulp.watch(paths.html.src, html).on('change', browserSync.reload);
 }
+exports.cleanDist = cleanDist
 exports.watch = watch
 exports.style = style
+exports.font = font
 exports.images = images
 exports.html = html
-exports.cleanDist = cleanDist
+exports.scripts = scripts
 
-var build = gulp.parallel([cleanDist,[html, style, images]], watch);
+let build = gulp.parallel([html, style, font, images, scripts], watch);
 
 gulp.task('default', build)
