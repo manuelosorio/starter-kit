@@ -1,5 +1,6 @@
 const gulp = require("gulp"),
     clean = require("gulp-clean"),
+    deploy = require('gulp-gh-pages'),
     sass = require("gulp-sass"),
     postcss = require("gulp-postcss"),
     pug = require("gulp-pug"),
@@ -12,7 +13,7 @@ const gulp = require("gulp"),
     browserSync = require("browser-sync").create(),
     bourbon = require('node-bourbon').includePaths,
     concat = require('gulp-concat'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify-es').default;
 
 let paths ={
   styles: {
@@ -25,15 +26,20 @@ let paths ={
   },
   html: {
     src: "src/**/*.pug",
+    exclude: "!src/includes/*.pug",
     dest: "_dist/"
   },
   images: {
-    src: "src/assets/images/**/*.{jpg,png,svg}",
+    src: "src/assets/images/**/*.{jpg,jpeg,png,svg}",
     dest: "_dist/images"
   },
   scripts: {
     src: "src/assets/scripts/**/*.js",
     dest: "_dist/scripts"
+  },
+  fonts: {
+    src: "src/assets/fonts/**",
+    dest: "_dist/fonts"
   }
 }
 function style() {
@@ -42,17 +48,20 @@ function style() {
     .pipe(sourcemaps.init())
     .pipe(sass({
       includePaths: ['styles'].concat(bourbon),
-      outputStyle: "expanded"
+      outputStyle: "compressed"
     }))
     .on("error", sass.logError)
     .pipe(postcss([autoprefixer()]))
-    .pipe(sourcemaps.write())
+    // .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.styles.dest))
     .pipe(browserSync.stream());
 }
 function html() {
   return gulp
-    .src(paths.html.src)
+    .src([
+      paths.html.src,
+      paths.html.exclude
+    ])
     .pipe(pug({
       pretty: true
     }))
@@ -88,10 +97,13 @@ function images () {
 function scripts() {
   return gulp.src(paths.scripts.src)
     // .pipe(concat('script.js'))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest(paths.scripts.dest))
 }
-
+function fonts() {
+  return gulp.src(paths.fonts.src)
+  .pipe(gulp.dest(paths.fonts.dest))
+}
 function reload() {
   browserSync.reload();
 }
@@ -118,7 +130,17 @@ exports.font = font
 exports.images = images
 exports.html = html
 exports.scripts = scripts
+exports.fonts = fonts
 
-let build = gulp.parallel([html, style, font, images, scripts], watch);
+let build = gulp.parallel([html, style, fonts, images, scripts, fonts]);
+let buildWatch = gulp.parallel([html, style, fonts, images, scripts, fonts], watch);
 
-gulp.task('default', build)
+gulp.task('default', buildWatch)
+gulp.task('static', build)
+gulp.task('deploy', function () {
+return gulp.src("./_dist/**/*")
+  .pipe(deploy({
+    remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
+    branch: "gh-pages"
+  }))
+})
