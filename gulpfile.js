@@ -47,12 +47,12 @@ function style() {
     .src(paths.styles.src)
     .pipe(sourcemaps.init())
     .pipe(sass({
-      includePaths: ['styles'].concat(bourbon),
+      includePaths: require('node-normalize-scss').with(['styles'].concat(bourbon)),
       outputStyle: "compressed"
     }))
     .on("error", sass.logError)
     .pipe(postcss([autoprefixer()]))
-    // .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.styles.dest))
     .pipe(browserSync.stream());
 }
