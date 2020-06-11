@@ -1,7 +1,7 @@
 const gulp = require("gulp"),
     clean = require("gulp-clean"),
     deploy = require('gulp-gh-pages'),
-    sass = require("gulp-sass"),
+    sass = require("gulp-dart-sass"),
     postcss = require("gulp-postcss"),
     pug = require("gulp-pug"),
     imagemin = require('gulp-imagemin'),
@@ -13,8 +13,14 @@ const gulp = require("gulp"),
     browserSync = require("browser-sync").create(),
     bourbon = require('node-bourbon').includePaths,
     concat = require('gulp-concat'),
-    uglify = require('gulp-uglify-es').default;
+    uglify = require('gulp-uglify-es').default,
+    babel = require("gulp-babel"),
+    normalize = require('node-normalize-scss'),
+    file = require('gulp-file');
 
+let config = {
+      cname: ''
+}
 let paths ={
   styles: {
       src: "src/assets/css/**/*.{sass,scss}",
@@ -48,8 +54,8 @@ function style() {
     .pipe(sourcemaps.init())
     .pipe(sass({
       includePaths: require('node-normalize-scss').with(['styles'].concat(bourbon)),
-      outputStyle: "compressed"
-    }))
+      outputStyle: "expanded"
+    }).on('error', sass.logError))
     .on("error", sass.logError)
     .pipe(postcss([autoprefixer()]))
     .pipe(sourcemaps.write())
@@ -96,8 +102,12 @@ function images () {
 }
 function scripts() {
   return gulp.src(paths.scripts.src)
+    .pipe(sourcemaps.init())
+    .pipe(plumber())
     // .pipe(concat('script.js'))
-    .pipe(uglify())
+    .pipe(babel())
+    // .pipe(uglify())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.scripts.dest))
 }
 function fonts() {
@@ -139,6 +149,7 @@ gulp.task('default', buildWatch)
 gulp.task('static', build)
 gulp.task('deploy', function () {
 return gulp.src("./_dist/**/*")
+  .pipe(file('CNAME', config.cname))
   .pipe(deploy({
     remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
     branch: "gh-pages"
