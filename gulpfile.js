@@ -1,33 +1,33 @@
 const gulp = require("gulp"),
-    clean = require("gulp-clean"),
-    deploy = require('gulp-gh-pages'),
-    sass = require("gulp-dart-sass"),
-    postcss = require("gulp-postcss"),
-    pug = require("gulp-pug"),
-    imagemin = require('gulp-imagemin'),
-    newer = require('gulp-newer'),
-    plumber = require('gulp-plumber'),
-    autoPrefixer = require("autoprefixer"),
-    sourcemaps = require("gulp-sourcemaps"),
-    browserSync = require("browser-sync").create(),
-    bourbon = require('node-bourbon').includePaths,
-    uglify = require('gulp-uglify-es').default,
-    browserify = require('gulp-bro'),
-    babelify = require('babelify'),
-    resets = require('scss-resets').includePaths,
-    file = require('gulp-file')
+  clean = require("gulp-clean"),
+  deploy = require('gulp-gh-pages'),
+  sass = require("gulp-dart-sass"),
+  postcss = require("gulp-postcss"),
+  pug = require("gulp-pug"),
+  imagemin = require('gulp-imagemin'),
+  newer = require('gulp-newer'),
+  plumber = require('gulp-plumber'),
+  autoPrefixer = require("autoprefixer"),
+  sourcemaps = require("gulp-sourcemaps"),
+  browserSync = require("browser-sync").create(),
+  bourbon = require('node-bourbon').includePaths,
+  uglify = require('gulp-uglify-es').default,
+  browserify = require('gulp-bro'),
+  babelify = require('babelify'),
+  resets = require('scss-resets').includePaths,
+  file = require('gulp-file')
 
 let config = {
-      cname: ''
+  cname: ''
 }
 let paths ={
   styles: {
-      src: "src/assets/css/**/*.{sass,scss}",
-      dest: "_dist/css"
+    src: "src/assets/css/**/*.{sass,scss}",
+    dest: "_dist/css"
   },
   fonts: {
-      src: "src/assets/fonts/**",
-      dest: "_dist/fonts"
+    src: "src/assets/fonts/**",
+    dest: "_dist/fonts"
   },
   html: {
     src: "src/**/*.pug",
@@ -43,10 +43,6 @@ let paths ={
     src: "src/assets/scripts/script.js",
     dest: "_dist/scripts"
   },
-  fonts: {
-    src: "src/assets/fonts/**",
-    dest: "_dist/fonts"
-  }
 }
 function style() {
   return gulp
@@ -111,20 +107,21 @@ function scripts() {
       ]
     }))
     .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(plumber())
     // .pipe(uglify())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.scripts.dest))
 }
 function fonts() {
   return gulp.src(paths.fonts.src)
-  .pipe(gulp.dest(paths.fonts.dest))
+    .pipe(gulp.dest(paths.fonts.dest))
 }
 function reload() {
   browserSync.reload();
 }
 function cleanDist() {
   return gulp.src('./_dist', {allowEmpty:true})
-        .pipe(clean())
+    .pipe(clean())
 }
 function watch() {
   browserSync.init({
@@ -154,10 +151,10 @@ let buildWatch = gulp.parallel([html, style, fonts, images, scripts, fonts], wat
 gulp.task('default', buildWatch)
 gulp.task('static', build)
 gulp.task('deploy', function () {
-return gulp.src("./_dist/**/*")
-  .pipe(file('CNAME', config.cname))
-  .pipe(deploy({
-    remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
-    branch: "gh-pages"
-  }))
+  return gulp.src("./_dist/**/*")
+    .pipe(file('CNAME', config.cname))
+    .pipe(deploy({
+      remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
+      branch: "gh-pages"
+    }))
 })
