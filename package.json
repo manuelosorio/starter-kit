@@ -1,12 +1,13 @@
 {
   "name": "starter-kit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Starter Kit for my future projects",
   "main": "gulpfile.js",
   "scripts": {
     "start": "gulp",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "test": "snyk test"
   },
   "repository": {
     "type": "git",
@@ -28,38 +29,40 @@
   },
   "homepage": "https://github.com/manuelosorio/starter-kit#readme",
   "devDependencies": {
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-syntax-class-properties": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.8.4",
-    "@babel/preset-typescript": "^7.9.0",
-    "autoprefixer": "^9.8.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
+    "autoprefixer": "^9.8.6",
     "babelify": "^10.0.0",
-    "browser-sync": "^2.26.7",
-    "cssnano": "^4.1.10",
+    "browser-sync": "^2.26.10",
     "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0-beta.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-bro": "^2.0.0",
     "gulp-concat": "^2.6.1",
-    "gulp-dart-sass": "^0.9.1",
-    "gulp-postcss": "^8.0.0",
+    "gulp-dart-sass": "^1.0.2",
+    "gulp-jsdoc3": "^3.0.0",
+    "gulp-postcss": "^9.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2",
     "node-bourbon": "^4.2.8",
-    "node-normalize-scss": "^8.0.1"
+    "node-normalize-scss": "^8.0.1",
+    "scss-resets": "^0.5.2"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.8.7",
+    "core-js": "^3.6.5",
     "gulp-clean": "^0.4.0",
     "gulp-file": "^0.4.0",
     "gulp-gh-pages": "^0.5.4",
-    "gulp-imagemin": "^5.0.3",
+    "gulp-imagemin": "^7.1.0",
     "gulp-newer": "^1.4.0",
     "gulp-plumber": "^1.2.1",
     "gulp-pug": "^4.0.1",
-    "gulp-uglify-es": "^1.0.4",
-    "jquery": "^3.4.1",
-    "snyk": "^1.339.1"
+    "gulp-uglify-es": "^2.0.0",
+    "node.normalize.scss": "^3.0.3",
+    "snyk": "^1.363.0"
   },
   "snyk": true
 }
