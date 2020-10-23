@@ -59,5 +59,13 @@ typings/
 
 # next.js build output
 .next
-package-lock.json
+
+# Compile files
 /_dist/
+
+# Webstorm
+/.idea/modules.xml
+/.idea/starter-kit.iml
+/.idea/vcs.xml
+/.idea/workspace.xml
+/.idea/codeStyles/codeStyleConfig.xml

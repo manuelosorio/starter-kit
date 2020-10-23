@@ -7,16 +7,15 @@ const gulp = require("gulp"),
     imagemin = require('gulp-imagemin'),
     newer = require('gulp-newer'),
     plumber = require('gulp-plumber'),
-    autoprefixer = require("autoprefixer"),
-    cssnano = require("cssnano"),
+    autoPrefixer = require("autoprefixer"),
     sourcemaps = require("gulp-sourcemaps"),
     browserSync = require("browser-sync").create(),
     bourbon = require('node-bourbon').includePaths,
-    concat = require('gulp-concat'),
     uglify = require('gulp-uglify-es').default,
-    babel = require("gulp-babel"),
-    normalize = require('node-normalize-scss'),
-    file = require('gulp-file');
+    browserify = require('gulp-bro'),
+    babelify = require('babelify'),
+    resets = require('scss-resets').includePaths,
+    file = require('gulp-file')
 
 let config = {
       cname: ''
@@ -40,7 +39,8 @@ let paths ={
     dest: "_dist/images"
   },
   scripts: {
-    src: "src/assets/scripts/**/*.js",
+    core_js: "src/assets/scripts/core.js",
+    src: "src/assets/scripts/script.js",
     dest: "_dist/scripts"
   },
   fonts: {
@@ -52,13 +52,13 @@ function style() {
   return gulp
     .src(paths.styles.src)
     .pipe(sourcemaps.init())
+    .pipe(plumber())
     .pipe(sass({
-      includePaths: require('node-normalize-scss').with(['styles'].concat(bourbon)),
+      includePaths: resets.concat(bourbon),
       outputStyle: "expanded"
     }).on('error', sass.logError))
-    .on("error", sass.logError)
-    .pipe(postcss([autoprefixer()]))
-    .pipe(sourcemaps.write())
+    .pipe(postcss([autoPrefixer()]))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.styles.dest))
     .pipe(browserSync.stream());
 }
@@ -71,6 +71,7 @@ function html() {
     .pipe(pug({
       pretty: true
     }))
+    .pipe(plumber())
     .pipe(gulp.dest(paths.html.dest))
 }
 function font() {
@@ -85,7 +86,7 @@ function images () {
     .pipe(
       imagemin([
         imagemin.gifsicle({ interlaced: true }),
-        imagemin.jpegtran({ progressive: true }),
+        imagemin.mozjpeg({ progressive: true }),
         imagemin.optipng({ optimizationLevel: 5 }),
         imagemin.svgo({
           plugins: [
@@ -101,13 +102,17 @@ function images () {
     .pipe(browserSync.stream());
 }
 function scripts() {
-  return gulp.src(paths.scripts.src)
-    .pipe(sourcemaps.init())
-    .pipe(plumber())
-    // .pipe(concat('script.js'))
-    .pipe(babel())
+  return gulp.src([paths.scripts.core_js, paths.scripts.src])
+    .pipe(browserify({
+      debug: true,
+      transform: [babelify.configure({
+        sourceMaps: true
+      }),
+      ]
+    }))
+    .pipe(sourcemaps.init({loadMaps: true}))
     // .pipe(uglify())
-    .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.scripts.dest))
 }
 function fonts() {
@@ -125,7 +130,8 @@ function watch() {
   browserSync.init({
     server: {
       baseDir: "./_dist"
-    }
+    },
+    open: false
   });
   gulp.watch(paths.styles.src, style).on('change', browserSync.reload);
   gulp.watch(paths.images.src, images).on('change', browserSync.reload);

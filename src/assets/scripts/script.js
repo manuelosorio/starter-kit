@@ -1,9 +1,5 @@
-window.addEventListener("load", () => {
-  console.log('hello world');
-})
+import {Example} from "./modules/example";
 
-class Student {
-  constructor(){}
-  name(){}
-  id(){}
-}
+let example = new Example();
+
+example.helloWorld();
