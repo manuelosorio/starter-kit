@@ -71,7 +71,7 @@
     "gulp-pug": "^4.0.1",
     "gulp-uglify-es": "^2.0.0",
     "node.normalize.scss": "^3.0.3",
-    "snyk": "^1.363.0"
+    "snyk": "^1.425.4"
   },
   "resolutions": {
     "gift": "^0.10.2"
