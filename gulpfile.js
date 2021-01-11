@@ -117,7 +117,7 @@ function scripts() {
 function scriptsMinify() {
   return bundler.pipe(source('main.js'))
     .pipe(buffer())
-    .pipe(uglify()) // Figure out why I can't .pipe(uglify()) to work.
+    .pipe(uglify())
     .pipe(gulp.dest(paths.scripts.dest))
 }
 function fonts() {
@@ -162,13 +162,13 @@ exports.images = images
 exports.html = html
 exports.scripts = scripts
 exports.scriptsMinify = scriptsMinify
-exports.fonts = fonts
-
+exports.ghPages = ghPages
 
 let build = gulp.series([html, style, fonts, images, scripts, fonts]);
 let buildWatch = gulp.parallel([html, style, fonts, images, scriptsMinify, fonts], watch);
+let staticBuild = gulp.series(cleanDist, build)
 
 gulp.task('default', gulp.series(cleanDist, buildWatch))
-gulp.task('static', gulp.series(cleanDist, build))
+gulp.task('static', gulp.series(staticBuild))
 // scriptsMinify
-gulp.task('deploy', gulp.series(cleanDist, build, ghPages));
+gulp.task('deploy', gulp.series(staticBuild, ghPages));

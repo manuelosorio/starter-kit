@@ -4605,6 +4605,11 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.1.0.tgz#a5d06b4a8b01e3a63771daa5cb7a1903e2e57067"
   integrity sha512-tW+UkmtNg/jv9CSofAKvgVcO7c2URjhTdW1ZTkcAritblu8tajiYy7YisnIflEwtKssCtOxpnBRoCB7iap0/TA==
 
+flex-exec@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/flex-exec/-/flex-exec-1.0.0.tgz#06974b68532839d2a12c32debcdb12378200fdf0"
+  integrity sha1-BpdLaFMoOdKhLDLevNsSN4IA/fA=
+
 flush-write-stream@^1.0.2:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/flush-write-stream/-/flush-write-stream-1.1.1.tgz#8dd7d873a1babc207d94ead0c2e0e44276ebf2e8"
@@ -4867,12 +4872,13 @@ gifsicle@^5.0.0:
     execa "^4.0.0"
     logalot "^2.0.0"
 
-gift@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/gift/-/gift-0.6.1.tgz#c1698e6b6887164ed978a01095423cff65b8e79f"
-  integrity sha1-wWmOa2iHFk7ZeKAQlUI8/2W4558=
+gift@^0.10.2, gift@^0.6.1:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/gift/-/gift-0.10.2.tgz#4600efe8f284b51fcb01c3527b321e22b494e156"
+  integrity sha512-wC9aKnQpjfOTWX+JG4DPJkS89ux6sl8EN4hXhv/2vBoXCDTEz1JiTeGTSeuKYlCqIgUFM1JwPVym34Sys3hvzw==
   dependencies:
-    underscore "1.x.x"
+    flex-exec "^1.0.0"
+    underscore "^1.8.3"
 
 glob-base@^0.3.0:
   version "0.3.0"
@@ -10947,7 +10953,7 @@ undeclared-identifiers@^1.1.2:
     simple-concat "^1.0.0"
     xtend "^4.0.1"
 
-underscore@1.x.x:
+underscore@^1.8.3:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.0.tgz#4814940551fc80587cef7840d1ebb0f16453be97"
   integrity sha512-21rQzss/XPMjolTiIezSu3JAjgagXKROtNrYFEOWK109qY1Uv2tVjPTZ1ci2HgvQDA16gHYSthQIJfB+XId/rQ==
