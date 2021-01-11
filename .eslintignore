@@ -1,0 +1,4 @@
+node_modules
+_dist
+.publish
+gulpfile.js

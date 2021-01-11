@@ -1,5 +1,0 @@
-import {Example} from "./modules/example";
-
-let example = new Example();
-
-example.helloWorld();

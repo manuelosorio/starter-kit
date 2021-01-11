@@ -12,10 +12,13 @@ const gulp = require("gulp"),
   browserSync = require("browser-sync").create(),
   bourbon = require('node-bourbon').includePaths,
   uglify = require('gulp-uglify-es').default,
-  browserify = require('gulp-bro'),
   babelify = require('babelify'),
   resets = require('scss-resets').includePaths,
-  file = require('gulp-file')
+  buffer = require('vinyl-buffer'),
+  browserify = require('browserify'),
+  file = require('gulp-file'),
+  tsify = require('tsify'),
+  source = require("vinyl-source-stream");
 
 let config = {
   cname: ''
@@ -39,8 +42,9 @@ let paths ={
     dest: "_dist/images"
   },
   scripts: {
-    core_js: "src/assets/scripts/core.js",
-    src: "src/assets/scripts/script.js",
+    core_js: "src/assets/scripts/core.ts",
+    src: "src/assets/scripts/main.ts",
+    watch: "src/assets/scripts/**/*.ts",
     dest: "_dist/scripts"
   },
 }
@@ -97,19 +101,23 @@ function images () {
     .pipe(gulp.dest(paths.images.dest))
     .pipe(browserSync.stream());
 }
+const bundler = browserify({
+  debug: true,
+  entries: [paths.scripts.src],
+  cache: {}
+  })
+  .plugin(tsify, {target: 'es6'})
+  .transform(babelify, {
+    extensions: ['.ts']
+  }).bundle();
 function scripts() {
-  return gulp.src([paths.scripts.core_js, paths.scripts.src])
-    .pipe(browserify({
-      debug: true,
-      transform: [babelify.configure({
-        sourceMaps: true
-      }),
-      ]
-    }))
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(plumber())
-    // .pipe(uglify())
-    .pipe(sourcemaps.write('.'))
+  return bundler.pipe(source('main.js'))
+    .pipe(gulp.dest(paths.scripts.dest))
+}
+function scriptsMinify() {
+  return bundler.pipe(source('main.js'))
+    .pipe(buffer())
+    .pipe(uglify()) // Figure out why I can't .pipe(uglify()) to work.
     .pipe(gulp.dest(paths.scripts.dest))
 }
 function fonts() {
@@ -132,10 +140,20 @@ function watch() {
   });
   gulp.watch(paths.styles.src, style).on('change', browserSync.reload);
   gulp.watch(paths.images.src, images).on('change', browserSync.reload);
-  gulp.watch(paths.scripts.src, scripts).on('change', browserSync.reload);
+  gulp.watch(paths.scripts.watch, scripts).on('change', browserSync.reload);
   gulp.watch(paths.fonts.src, scripts).on('change', browserSync.reload);
   gulp.watch(paths.html.src, html).on('change', browserSync.reload);
 }
+
+function ghPages() {
+  return gulp.src("./_dist/**/*")
+    .pipe(file('CNAME', config.cname))
+    .pipe(deploy({
+      remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
+      branch: "gh-pages"
+    }))
+}
+
 exports.cleanDist = cleanDist
 exports.watch = watch
 exports.style = style
@@ -143,18 +161,14 @@ exports.font = font
 exports.images = images
 exports.html = html
 exports.scripts = scripts
+exports.scriptsMinify = scriptsMinify
 exports.fonts = fonts
 
-let build = gulp.parallel([html, style, fonts, images, scripts, fonts]);
-let buildWatch = gulp.parallel([html, style, fonts, images, scripts, fonts], watch);
 
-gulp.task('default', buildWatch)
-gulp.task('static', build)
-gulp.task('deploy', function () {
-  return gulp.src("./_dist/**/*")
-    .pipe(file('CNAME', config.cname))
-    .pipe(deploy({
-      remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
-      branch: "gh-pages"
-    }))
-})
+let build = gulp.series([html, style, fonts, images, scripts, fonts]);
+let buildWatch = gulp.parallel([html, style, fonts, images, scriptsMinify, fonts], watch);
+
+gulp.task('default', gulp.series(cleanDist, buildWatch))
+gulp.task('static', gulp.series(cleanDist, build))
+// scriptsMinify
+gulp.task('deploy', gulp.series(cleanDist, build, ghPages));
