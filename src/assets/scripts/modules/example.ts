@@ -8,6 +8,6 @@ export class Example {
   }
   test(arg: string, num: Number, obj: Person) {
     console.log('Arg: %s Num: %s', arg, num);
-    console.info(obj);
+    console.log(obj);
   }
 }

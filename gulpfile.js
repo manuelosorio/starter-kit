@@ -18,7 +18,8 @@ const gulp = require("gulp"),
   browserify = require('browserify'),
   file = require('gulp-file'),
   tsify = require('tsify'),
-  source = require("vinyl-source-stream");
+  source = require("vinyl-source-stream"),
+  glob = require('glob');
 
 let config = {
   cname: ''
@@ -44,10 +45,11 @@ let paths ={
   scripts: {
     core_js: "src/assets/scripts/core.ts",
     src: "src/assets/scripts/main.ts",
-    watch: "src/assets/scripts/**/*.ts",
+    watch: "src/assets/scripts/**/*.{ts, tsx}",
     dest: "_dist/scripts"
   },
 }
+
 function style() {
   return gulp
     .src(paths.styles.src)
@@ -101,20 +103,41 @@ function images () {
     .pipe(gulp.dest(paths.images.dest))
     .pipe(browserSync.stream());
 }
-const bundler = browserify({
-  debug: true,
-  entries: [paths.scripts.src],
-  cache: {}
-  })
-  .plugin(tsify, {target: 'es6'})
-  .transform(babelify, {
-    extensions: ['.ts']
-  }).bundle();
 function scripts() {
-  return bundler.pipe(source('main.js'))
-    .pipe(gulp.dest(paths.scripts.dest))
+  return glob(paths.scripts.watch, {}, (err, files) => {
+    if (err) {
+      console.log('Error')
+    }
+    const b = browserify({
+      debug: true,
+      cache: {},
+      packageCache: {},
+    });
+    files.forEach((file) => {
+      console.log(file)
+      b.add(file);
+    })
+    b.plugin(tsify)
+      .transform(babelify, {
+        extensions: ['.ts'],
+      })
+      .bundle()
+      .pipe(source('main.js'))
+      .pipe(gulp.dest(paths.scripts.dest))
+  })
 }
 function scriptsMinify() {
+  const bundler = browserify({
+    debug: true,
+    baseDir: '.',
+    entries: [paths.scripts.src],
+    cache: {},
+    packageCache: {}
+  })
+    .plugin(tsify)
+    .transform(babelify, {
+      extensions: ['.ts']
+    }).bundle();
   return bundler.pipe(source('main.js'))
     .pipe(buffer())
     .pipe(uglify())
@@ -123,9 +146,6 @@ function scriptsMinify() {
 function fonts() {
   return gulp.src(paths.fonts.src)
     .pipe(gulp.dest(paths.fonts.dest))
-}
-function reload() {
-  browserSync.reload();
 }
 function cleanDist() {
   return gulp.src('./_dist', {allowEmpty:true})
@@ -164,8 +184,8 @@ exports.scripts = scripts
 exports.scriptsMinify = scriptsMinify
 exports.ghPages = ghPages
 
-let build = gulp.series([html, style, fonts, images, scripts, fonts]);
-let buildWatch = gulp.parallel([html, style, fonts, images, scriptsMinify, fonts], watch);
+let build = gulp.parallel([html, style, fonts, images, scriptsMinify, fonts]);
+let buildWatch = gulp.series(gulp.parallel([html, style, fonts, images, scripts2, fonts]), watch);
 let staticBuild = gulp.series(cleanDist, build)
 
 gulp.task('default', gulp.series(cleanDist, buildWatch))

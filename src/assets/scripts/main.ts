@@ -12,3 +12,9 @@ exObject.firstName = "Manuel"
 exObject.lastName = "Osorio";
 exObject.age = 23;
 example.test('Hello', 1, exObject)
+example.test('bye', 2, {
+  firstName: 'John',
+  lastName: 'Doe',
+  age: 38,
+  favoriteFood: 'Pepperoni Pizza'
+});
