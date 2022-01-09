@@ -66,13 +66,13 @@
     "gulp-clean": "^0.4.0",
     "gulp-file": "^0.4.0",
     "gulp-gh-pages": "^0.5.4",
-    "gulp-imagemin": "^7.1.0",
+    "gulp-imagemin": "^8.0.0",
     "gulp-newer": "^1.4.0",
     "gulp-plumber": "^1.2.1",
-    "gulp-pug": "^4.0.1",
+    "gulp-pug": "^5.0.0",
     "gulp-uglify-es": "^2.0.0",
     "node.normalize.scss": "^3.0.3",
-    "snyk": "^1.425.4"
+    "snyk": "^1.685.0"
   },
   "resolutions": {
     "gift": "^0.10.2"
