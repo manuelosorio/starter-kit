@@ -5,7 +5,6 @@
   "main": "gulpfile.js",
   "scripts": {
     "start": "gulp",
-    "build:gulp": "tsc gulpfile2.ts",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
     "test": "snyk test"
@@ -42,6 +41,7 @@
     "browser-sync": "^2.26.10",
     "browserify": "^17.0.0",
     "eslint": "^7.17.0",
+    "glob": "^7.2.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean": "^0.4.0",
@@ -61,7 +61,6 @@
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^3.0.0",
     "gulplog": "^1.0.0",
-    "glob": "^7.2.0",
     "node-bourbon": "^4.2.8",
     "node-glob": "^1.2.0",
     "node-normalize-scss": "^8.1.2",
@@ -73,13 +72,14 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
+    "@snyk/protect": "^1.873.0",
     "core-js": "^3.21.1",
     "node.normalize.scss": "^3.0.3",
-    "scss-resets": "^0.5.2",
-    "snyk": "1.873.0"
+    "scss-resets": "^0.5.2"
   },
   "resolutions": {
-    "gift": "^0.10.2"
+    "gift": "^0.10.2",
+    "braces": "^2.3.1"
   },
   "snyk": true
 }
