@@ -73,7 +73,7 @@
   },
   "dependencies": {
     "@snyk/protect": "^1.873.0",
-    "core-js": "^3.21.1",
+    "core-js": "^3.22.0",
     "node.normalize.scss": "^3.0.3",
     "scss-resets": "^0.5.2"
   },
