@@ -1018,10 +1018,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@snyk/protect@^1.873.0":
-  version "1.873.0"
-  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.873.0.tgz#ee418d15b359b8c4fceb8995f9a0ef1b90eaf9b3"
-  integrity sha512-WZc7Fm7VbXVyX4fTpEc5ut0pYvHi9/ilZHZXz3sk1a+EoKwsQdY/9zMfypU+R+vRP/pgKLoXBzNK8dyx6aHTpQ==
+"@snyk/protect@^1.875.0":
+  version "1.1081.0"
+  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.1081.0.tgz#df5f4ae499019bff30045880db8cfa8ec0348bcf"
+  integrity sha512-V+4DJPLorQph9j78PB3qpxOEREzXHJN/txg2Cxn2EGw+7IWOPPeLgUb4jO+tjVVmqMYmrvohMDQKErcjIxVqVg==
 
 "@socket.io/base64-arraybuffer@~1.0.2":
   version "1.0.2"
@@ -5504,11 +5504,9 @@ json-stable-stringify-without-jsonify@^1.0.1:
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
 json5@^2.1.2:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.0.tgz#2dfefe720c6ba525d9ebd909950f0515316c89a3"
-  integrity sha512-f+8cldu7X/y7RAJurMEJmdoKXGB/X550w2Nr3tTbezL6RwEE/iMcm+tZnXeoZtKuOq6ft8+CqzEkrIgx1fPoQA==
-  dependencies:
-    minimist "^1.2.5"
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
+  integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
 
 jsonfile@^3.0.0:
   version "3.0.1"
