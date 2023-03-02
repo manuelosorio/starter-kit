@@ -5,8 +5,8 @@
   "main": "gulpfile.js",
   "scripts": {
     "start": "gulp",
-    "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect",
+    "snyk:protect": "snyk-protect",
+    "prepublish": "npm run snyk:protect",
     "test": "snyk test"
   },
   "repository": {
@@ -34,13 +34,13 @@
     "@babel/plugin-syntax-class-properties": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.8.4",
-    "@typescript-eslint/eslint-plugin": "^4.12.0",
-    "@typescript-eslint/parser": "^4.12.0",
-    "autoprefixer": "^9.8.6",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "autoprefixer": "^10.4.13",
     "babelify": "^10.0.0",
     "browser-sync": "^2.26.10",
     "browserify": "^17.0.0",
-    "eslint": "^7.17.0",
+    "eslint": "^8.35.0",
     "glob": "^7.2.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
@@ -49,7 +49,7 @@
     "gulp-dart-sass": "^1.0.2",
     "gulp-file": "^0.4.0",
     "gulp-gh-pages": "^0.5.4",
-    "gulp-imagemin": "7.1.0",
+    "gulp-imagemin": "^7.0.0",
     "gulp-jsdoc3": "^3.0.0",
     "gulp-newer": "^1.4.0",
     "gulp-plumber": "^1.2.1",
@@ -57,29 +57,30 @@
     "gulp-pug": "^5.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
-    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-typescript": "^5.0.1",
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^3.0.0",
     "gulplog": "^1.0.0",
     "node-bourbon": "^4.2.8",
     "node-glob": "^1.2.0",
     "node-normalize-scss": "^8.1.2",
-    "ts-node": "^10.7.0",
+    "ts-node": "^10.9.1",
     "tsc": "^2.0.4",
     "tsify": "^5.0.4",
-    "typescript": "^4.6.2",
+    "typescript": "^4.9.5",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "@snyk/protect": "^1.873.0",
-    "core-js": "^3.21.1",
+    "@snyk/protect": "^1.1110.0",
+    "core-js": "^3.29.0",
     "node.normalize.scss": "^3.0.3",
     "scss-resets": "^0.5.2"
   },
   "resolutions": {
     "gift": "^0.10.2",
-    "braces": "^2.3.1"
+    "braces": "^2.3.1",
+    "postcss": "^8.1.0"
   },
   "snyk": true
 }
