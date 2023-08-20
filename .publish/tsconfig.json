@@ -1,0 +1,23 @@
+{
+  "version": "4.6.2",
+  "compilerOptions": {
+    "lib": ["es6", "es2015.promise", "dom", "es2015"],
+    "target": "ES5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "outDir": "_dist",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "sourceMap": true
+  },
+  "type": "module",
+  "exclude": [
+    "node_modules"
+  ]
+}
