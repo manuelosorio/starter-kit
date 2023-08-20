@@ -1,6 +1,6 @@
 const gulp = require("gulp"),
   clean = require("gulp-clean"),
-  deploy = require('gulp-gh-pages'),
+  { publish } = require('gh-pages'),
   sass = require("gulp-dart-sass"),
   postcss = require("gulp-postcss"),
   pug = require("gulp-pug"),
@@ -22,7 +22,7 @@ const gulp = require("gulp"),
   glob = require('glob');
 
 let config = {
-  cname: ''
+  cname: 'starter-kit.manuelosorio.me'
 }
 let paths ={
   styles: {
@@ -166,12 +166,30 @@ function watch() {
 }
 
 function ghPages() {
-  return gulp.src("./_dist/**/*")
+  gulp.src("./_dist/**/*")
     .pipe(file('CNAME', config.cname))
-    .pipe(deploy({
+    .pipe(gulp.dest('./.publish'));
+
+  return publish(
+    "./.publish",
+    {
       remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
-      branch: "gh-pages"
-    }))
+      branch: 'gh-pages',
+      cacheDir: '.publish',
+      message: 'Update ' + new Date().getUTCDate().toString()
+    },
+    function (err) {
+      if (err) {
+        console.log(err)
+      }
+    }
+  ).then().catch((err) => {
+    console.log(err)
+  })
+    // .pipe(publish({
+    //   ,
+    //   branch: "gh-pages"
+    // }))
 }
 
 exports.cleanDist = cleanDist
