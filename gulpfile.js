@@ -171,7 +171,7 @@ function ghPages() {
     .pipe(gulp.dest('./.publish'));
 
   return publish(
-    "./.publish",
+    ".publish",
     {
       remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
       branch: 'gh-pages',

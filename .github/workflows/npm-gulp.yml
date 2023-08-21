@@ -26,6 +26,5 @@ jobs:
       run: |
         mkdir -p .publish
         npm install
-        npm run build
         npm run deploy
         ls
