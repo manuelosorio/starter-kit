@@ -27,3 +27,4 @@ jobs:
         mkdir .publish
         npm install
         npm run deploy
+        ls
