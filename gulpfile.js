@@ -178,11 +178,12 @@ function ghPages() {
       cacheDir: '.publish',
       message: 'Update ' + new Date().getUTCDate().toString()
     },
-  ).then(r => {
-    console.log('Published')
-  }).catch(e => {
-    console.log(e)
-  });
+    function (err) {
+      if (err) {
+        console.log(err)
+      }
+    }
+  );
 }
 
 exports.cleanDist = cleanDist
