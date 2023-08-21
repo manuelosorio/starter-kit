@@ -175,10 +175,10 @@ function ghPages() {
     {
       remoteUrl: "https://github.com/manuelosorio/starter-kit.git",
       branch: 'gh-pages',
-      cacheDir: '.publish',
-      message: 'Update ' + new Date().getUTCDate().toString()
+      // cacheDir: '.publish',
+      message: 'Update ' + new Date().toISOString()
     },
-    function (err) {
+    (err) => {
       if (err) {
         console.log(err)
       }
