@@ -1,25 +1,26 @@
-const gulp = require("gulp"),
-  clean = require("gulp-clean"),
-  { publish } = require('gh-pages'),
-  sass = require("gulp-dart-sass"),
-  postcss = require("gulp-postcss"),
-  pug = require("gulp-pug"),
-  imagemin = require('gulp-imagemin'),
-  newer = require('gulp-newer'),
-  plumber = require('gulp-plumber'),
-  autoPrefixer = require("autoprefixer"),
-  sourcemaps = require("gulp-sourcemaps"),
-  browserSync = require("browser-sync").create(),
-  bourbon = require('node-bourbon').includePaths,
-  uglify = require('gulp-uglify-es').default,
-  babelify = require('babelify'),
-  resets = require('scss-resets').includePaths,
-  buffer = require('vinyl-buffer'),
-  browserify = require('browserify'),
-  file = require('gulp-file'),
-  tsify = require('tsify'),
-  source = require("vinyl-source-stream"),
-  glob = require('glob');
+const gulp = require("gulp");
+const clean = require("gulp-clean");
+const { publish } = require('gh-pages');
+const sass = require("gulp-dart-sass");
+const postcss = require("gulp-postcss");
+const pug = require("gulp-pug");
+const newer = require('gulp-newer');
+const plumber = require('gulp-plumber');
+const autoPrefixer = require("autoprefixer");
+const sourcemaps = require("gulp-sourcemaps");
+const browserSync = require("browser-sync").create();
+const bourbon = require('node-bourbon').includePaths;
+const uglify = require('gulp-uglify-es').default;
+const babelify = require('babelify');
+const resets = require('scss-resets').includePaths;
+const buffer = require('vinyl-buffer');
+const browserify = require('browserify');
+const file = require('gulp-file');
+const tsify = require('tsify');
+const source = require("vinyl-source-stream");
+const glob = require('glob');
+const packer = require("@hail2u/css-mqpacker");
+const purgeCSS = require('@fullhuman/postcss-purgecss');
 
 let config = {
   cname: 'starter-kit.manuelosorio.me'
@@ -59,7 +60,17 @@ function style() {
       includePaths: resets.concat(bourbon),
       outputStyle: "expanded"
     }).on('error', sass.logError))
-    .pipe(postcss([autoPrefixer()]))
+    .pipe(postcss([
+      autoPrefixer()],
+      packer({
+        sort: true
+      }),
+      purgeCSS({
+        content: [
+          paths.html.dest + '**/*.html'
+        ]
+      })
+    ))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.styles.dest))
     .pipe(browserSync.stream());
@@ -74,34 +85,34 @@ function html() {
       pretty: true
     }))
     .pipe(plumber())
-    .pipe(gulp.dest(paths.html.dest))
+    .pipe(gulp.dest(paths.html.dest));
 }
 function font() {
   return gulp
     .src(paths.fonts.src)
     .pipe(gulp.dest(paths.fonts.dest))
 }
-function images () {
+async function images() {
+  const gulpImagemin = await import('gulp-imagemin');
   return gulp
     .src(paths.images.src)
     .pipe(newer(paths.images.dest))
     .pipe(
-      imagemin([
-        imagemin.gifsicle({ interlaced: true }),
-        imagemin.mozjpeg({ progressive: true }),
-        imagemin.optipng({ optimizationLevel: 5 }),
-        imagemin.svgo({
+      gulpImagemin.default([
+        gulpImagemin.gifsicle({ interlaced: true }),
+        gulpImagemin.mozjpeg({ progressive: true }),
+        gulpImagemin.optipng({ optimizationLevel: 5 }),
+        gulpImagemin.svgo({
           plugins: [
-            {
-              removeViewBox: false,
-              collapseGroups: true
-            }
+            { removeViewBox: false },
+            { collapseGroups: true }
           ]
         })
       ])
+
     )
     .pipe(gulp.dest(paths.images.dest))
-    .pipe(browserSync.stream());
+    .pipe(browserSync.stream())
 }
 function scripts() {
   return glob(paths.scripts.watch, {}, (err, files) => {
@@ -196,8 +207,8 @@ exports.scripts = scripts
 exports.scriptsMinify = scriptsMinify
 exports.ghPages = ghPages
 
-let build = gulp.parallel([html, style, fonts, images, scriptsMinify, fonts]);
-let buildWatch = gulp.series(gulp.parallel([html, style, fonts, images, scripts, fonts]), watch);
+let build = gulp.parallel([html, fonts, scriptsMinify, fonts], style, images,);
+let buildWatch = gulp.series(gulp.parallel([html, fonts, scripts, fonts]), images, style, watch);
 let staticBuild = gulp.series(cleanDist, build)
 
 gulp.task('default', gulp.series(cleanDist, buildWatch))
