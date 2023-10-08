@@ -79,7 +79,7 @@
     "@snyk/protect": "^1.1110.0",
     "core-js": "^3.29.0",
     "node-normalize-scss": "^8.1.2",
-    "postcss": "^8.1.0",
+    "postcss": "^8.4.31",
     "scss-resets": "^0.5.2"
   },
   "resolutions": {
