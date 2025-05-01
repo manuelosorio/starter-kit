@@ -43,7 +43,7 @@
     "@typescript-eslint/parser": "^5.54.0",
     "autoprefixer": "^10.4.13",
     "babelify": "^10.0.0",
-    "browser-sync": "^2.26.10",
+    "browser-sync": "^3.0.3",
     "browserify": "^17.0.0",
     "eslint": "^8.35.0",
     "gh-pages": "^6.0.0",
